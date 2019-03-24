@@ -8,8 +8,8 @@ routes.get('/', (req, res) => {
             ]
         })
         .then(teachers => {
+            res.json(teachers)
             let guru = teachers.map(el => el.dataValues)
-
             res.render('index', {
                 teachers: guru
             });
@@ -23,6 +23,7 @@ routes.get('/students', (req, res) => {
             ]
         })
         .then(students => {
+            res.json(students)           
             students = students.map(el => el.dataValues)
             res.render('student/index', {
                 students
@@ -30,7 +31,7 @@ routes.get('/students', (req, res) => {
         })
 });
 
-routes.post('/students/add', function (req, res) {
+routes.post('/students/add', (req, res) => {
     Model.Student.create({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -39,6 +40,7 @@ routes.post('/students/add', function (req, res) {
             updatedAt: new Date()
         })
         .then(students => {
+            res.json(students)            
             res.redirect('/students')
         })
         .catch(err => {})
@@ -48,9 +50,10 @@ routes.get('/students/add', (req, res) => {
     res.render('student-add')
 });
 
-routes.get('/students/edit/:id', function (req, res) {
+routes.get('/students/edit/:id', (req, res) => {
     Model.Student.findByPk(Number(req.params.id))
         .then(students => {
+            res.json(students)
             students = students.dataValues
             res.render('student/edit', {
                 students
@@ -58,7 +61,7 @@ routes.get('/students/edit/:id', function (req, res) {
         })
 })
 
-routes.post('/students/edit/:id', function (req, res) {
+routes.post('/students/edit/:id', (req, res) => {
     Model.Student.update({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -70,6 +73,7 @@ routes.post('/students/edit/:id', function (req, res) {
             }
         })
         .then(students => {
+            res.json(students)
             res.redirect('/students')
         })
         .catch(err => {
@@ -77,22 +81,23 @@ routes.post('/students/edit/:id', function (req, res) {
         })
 })
 
-routes.get('/students/delete/:id', function (req, res) {
+routes.get('/students/delete/:id', (req, res) => {
     Model.Student.destroy({
             where: {
                 id: Number(req.params.id)
             }
         })
         .then(students => {
+            res.json(students)
             res.redirect('/students')
         })
         .catch(err => {
             console.log(`Update error: ${err}`);
         })
 })
-// end student
+// end student API
 
-// teacher
+// teacher API
 routes.get('/teachers', (req, res) => {
     Model.Teachers.findAll({
             order: [
@@ -100,6 +105,7 @@ routes.get('/teachers', (req, res) => {
             ]
         })
         .then(teachers => {
+            res.json(teachers)
             teachers = teachers.map(el => el.dataValues)
             res.render('teacher/index', {
                 teachers
@@ -107,7 +113,7 @@ routes.get('/teachers', (req, res) => {
         })
 });
 
-routes.post('/teachers/add', function (req, res) {
+routes.post('/teachers/add', (req, res) => {
     Model.Teachers.create({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -116,6 +122,7 @@ routes.post('/teachers/add', function (req, res) {
             updatedAt: new Date()
         })
         .then(teachers => {
+            res.json(teachers)
             res.redirect('/teachers')
         })
         .catch(err => {})
@@ -125,9 +132,10 @@ routes.get('/teachers/add', (req, res) => {
     res.render('teacher/add')
 });
 
-routes.get('/teachers/edit/:id', function (req, res) {
+routes.get('/teachers/edit/:id', (req, res) => {
     Model.Teachers.findByPk(Number(req.params.id))
         .then(teachers => {
+            res.json(teachers)
             teachers = teachers.dataValues
             res.render('teacher/edit', {
                 teachers
@@ -135,7 +143,7 @@ routes.get('/teachers/edit/:id', function (req, res) {
         })
 })
 
-routes.post('/teachers/edit/:id', function (req, res) {
+routes.post('/teachers/edit/:id', (req, res) => {
     Model.Teachers.update({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
@@ -147,29 +155,31 @@ routes.post('/teachers/edit/:id', function (req, res) {
             }
         })
         .then(teachers => {
+            res.json(teachers)
             res.redirect('/teachers')
         })
         .catch(err => {
-            console.log(`Update error: ${err}`);
+            res.json(err)
         })
 })
 
-routes.get('/teachers/delete/:id', function (req, res) {
+routes.get('/teachers/delete/:id', (req, res) => {
     Model.Teachers.destroy({
             where: {
                 id: Number(req.params.id)
             }
         })
         .then(teachers => {
+            res.json(teachers)
             res.redirect('/teachers')
         })
         .catch(err => {
-            console.log(`Update error: ${err}`);
+            res.json(err)
         })
 })
-// end of teachers
+// end of teachers API
 
-// subject
+// subject API
 routes.get('/subjects', (req, res) => {
     Model.Subject.findAll({
             order: [
@@ -177,6 +187,7 @@ routes.get('/subjects', (req, res) => {
             ]
         })
         .then(subjects => {
+            res.json(subjects)
             subjects = subjects.map(el => el.dataValues)
             res.render('subject/index', {
                 subjects
@@ -184,13 +195,14 @@ routes.get('/subjects', (req, res) => {
         })
 });
 
-routes.post('/subjects/add', function (req, res) {
+routes.post('/subjects/add', (req, res) => {
     Model.Subject.create({
             subject_name: req.body.subject_name,
             createdAt: new Date(),
             updatedAt: new Date()
         })
         .then(subjects => {
+            res.json(subjects)
             res.redirect('/subjects')
         })
         .catch(err => {})
@@ -200,9 +212,10 @@ routes.get('/subjects/add', (req, res) => {
     res.render('subject/add')
 });
 
-routes.get('/subjects/edit/:id', function (req, res) {
+routes.get('/subjects/edit/:id', (req, res) => {
     Model.Subject.findByPk(Number(req.params.id))
         .then(subjects => {
+            res.json(subjects)
             subjects = subjects.dataValues
             res.render('subject/edit', {
                 subjects
@@ -210,7 +223,7 @@ routes.get('/subjects/edit/:id', function (req, res) {
         })
 })
 
-routes.post('/subjects/edit/:id', function (req, res) {
+routes.post('/subjects/edit/:id', (req, res) => {
     Model.Subject.update({
             subject_name: req.body.subject_name,
             updatedAt: new Date()
@@ -220,29 +233,31 @@ routes.post('/subjects/edit/:id', function (req, res) {
             }
         })
         .then(subjects => {
+            res.json(subjects)
             res.redirect('/subjects')
         })
         .catch(err => {
-            console.log(`Update error: ${err}`);
+            res.json(err)
         })
 })
 
-routes.get('/subjects/delete/:id', function (req, res) {
+routes.get('/subjects/delete/:id', (req, res) => {
     Model.Subject.destroy({
             where: {
                 id: Number(req.params.id)
             }
         })
         .then(subjects => {
+            res.json(subjects)
             res.redirect('/subjects')
         })
         .catch(err => {
-            console.log(`Update error: ${err}`);
+            res.json(err)            
         })
 })
-// end of 
+// end of subject API
 
-routes.get('*', function (req, res) {
+routes.get('*', (req, res) => {
     res.status(404).send('404 page not found');
 });
 
