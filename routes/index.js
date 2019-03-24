@@ -14,6 +14,9 @@ routes.get('/', (req, res) => {
                 teachers: guru
             });
         })
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.get('/students', (req, res) => {
@@ -29,6 +32,9 @@ routes.get('/students', (req, res) => {
                 students
             })
         })
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.post('/students/add', (req, res) => {
@@ -40,10 +46,12 @@ routes.post('/students/add', (req, res) => {
             updatedAt: new Date()
         })
         .then(students => {
-            res.json(students)            
+            res.json(students)          
             res.redirect('/students')
         })
-        .catch(err => {})
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.get('/students/add', (req, res) => {
@@ -58,6 +66,9 @@ routes.get('/students/edit/:id', (req, res) => {
             res.render('student/edit', {
                 students
             })
+        })
+        .catch(err => {
+            res.status(400).json(err)
         })
 })
 
@@ -77,7 +88,7 @@ routes.post('/students/edit/:id', (req, res) => {
             res.redirect('/students')
         })
         .catch(err => {
-            console.log(`Update error: ${err}`);
+            res.status(400).json(err)
         })
 })
 
@@ -92,7 +103,7 @@ routes.get('/students/delete/:id', (req, res) => {
             res.redirect('/students')
         })
         .catch(err => {
-            console.log(`Update error: ${err}`);
+            res.status(400).json(err)
         })
 })
 // end student API
@@ -111,6 +122,9 @@ routes.get('/teachers', (req, res) => {
                 teachers
             })
         })
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.post('/teachers/add', (req, res) => {
@@ -125,7 +139,9 @@ routes.post('/teachers/add', (req, res) => {
             res.json(teachers)
             res.redirect('/teachers')
         })
-        .catch(err => {})
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.get('/teachers/add', (req, res) => {
@@ -140,6 +156,9 @@ routes.get('/teachers/edit/:id', (req, res) => {
             res.render('teacher/edit', {
                 teachers
             })
+        })
+        .catch(err => {
+            res.status(400).json(err)            
         })
 })
 
@@ -193,6 +212,9 @@ routes.get('/subjects', (req, res) => {
                 subjects
             })
         })
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.post('/subjects/add', (req, res) => {
@@ -205,7 +227,9 @@ routes.post('/subjects/add', (req, res) => {
             res.json(subjects)
             res.redirect('/subjects')
         })
-        .catch(err => {})
+        .catch(err => {
+            res.status(400).json(err)            
+        })
 });
 
 routes.get('/subjects/add', (req, res) => {
@@ -220,6 +244,9 @@ routes.get('/subjects/edit/:id', (req, res) => {
             res.render('subject/edit', {
                 subjects
             })
+        })
+        .catch(err => {
+            res.status(400).json(err)            
         })
 })
 
@@ -237,7 +264,7 @@ routes.post('/subjects/edit/:id', (req, res) => {
             res.redirect('/subjects')
         })
         .catch(err => {
-            res.json(err)
+            res.status(400).json(err)            
         })
 })
 
@@ -252,7 +279,7 @@ routes.get('/subjects/delete/:id', (req, res) => {
             res.redirect('/subjects')
         })
         .catch(err => {
-            res.json(err)            
+            res.status(400).json(err)            
         })
 })
 // end of subject API
