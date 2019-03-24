@@ -1,9 +1,9 @@
 const express = require('express');
 const routes = express.Router();
-const Model = require('../models')
+const ModelSubject = require('../models').Subject;
 
 routes.get('/', (req, res) => {
-    Model.Subject.findAll({
+    ModelSubject.findAll({
             order: [
                 ['id', 'ASC']
             ]
@@ -21,7 +21,7 @@ routes.get('/', (req, res) => {
 });
 
 routes.post('/add', (req, res) => {
-    Model.Subject.create({
+    ModelSubject.create({
             subject_name: req.body.subject_name,
             createdAt: new Date(),
             updatedAt: new Date()
@@ -40,7 +40,7 @@ routes.get('/add', (req, res) => {
 });
 
 routes.get('/edit/:id', (req, res) => {
-    Model.Subject.findByPk(Number(req.params.id))
+    ModelSubject.findByPk(Number(req.params.id))
         .then(subjects => {
             // res.json(subjects)
             subjects = subjects.dataValues
@@ -54,7 +54,7 @@ routes.get('/edit/:id', (req, res) => {
 })
 
 routes.post('/edit/:id', (req, res) => {
-    Model.Subject.update({
+    ModelSubject.update({
             subject_name: req.body.subject_name,
             updatedAt: new Date()
         }, {
@@ -72,7 +72,7 @@ routes.post('/edit/:id', (req, res) => {
 })
 
 routes.get('/delete/:id', (req, res) => {
-    Model.Subject.destroy({
+    ModelSubject.destroy({
             where: {
                 id: Number(req.params.id)
             }

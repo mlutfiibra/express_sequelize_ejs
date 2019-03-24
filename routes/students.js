@@ -1,9 +1,9 @@
 const express = require('express');
 const routes = express.Router();
-const Model = require('../models')
+const ModelStudent = require('../models').Student
 
 routes.get('/', (req, res) => {
-    Model.Student.findAll({
+    ModelStudent.findAll({
             order: [
                 ['id', 'ASC']
             ]
@@ -21,7 +21,7 @@ routes.get('/', (req, res) => {
 });
 
 routes.post('/add', (req, res) => {
-    Model.Student.create({
+    ModelStudent.create({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
@@ -42,7 +42,7 @@ routes.get('/add', (req, res) => {
 });
 
 routes.get('/edit/:id', (req, res) => {
-    Model.Student.findByPk(Number(req.params.id))
+    ModelStudent.findByPk(Number(req.params.id))
         .then(students => {
             // res.json(students)
             students = students.dataValues
@@ -56,7 +56,7 @@ routes.get('/edit/:id', (req, res) => {
 })
 
 routes.post('/edit/:id', (req, res) => {
-    Model.Student.update({
+    ModelStudent.update({
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
@@ -76,7 +76,7 @@ routes.post('/edit/:id', (req, res) => {
 })
 
 routes.get('/delete/:id', (req, res) => {
-    Model.Student.destroy({
+    ModelStudent.destroy({
             where: {
                 id: Number(req.params.id)
             }
