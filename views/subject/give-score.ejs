@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {title: 'Give Score'}) %>
+<%- include('../partials/navbar') %>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><a href="/subjects">return to subject list</a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="/subjects/<%=subject.subjectId%>/give-score" method="POST">
+                    <input type="number" name="score">
+
+                    <button class="primary-button">Tambah Nilai</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+
+</body>
+
+</html>

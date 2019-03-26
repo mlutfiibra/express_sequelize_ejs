@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "l",
-    "database": "sep_db",
+    "database": "many_to_many",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

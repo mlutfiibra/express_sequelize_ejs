@@ -1,0 +1,17 @@
+.footer {
+    /* position: absolute; */
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    border-top: solid 1px #bdbdbd;
+    background-color: #fff;
+    text-align: center;
+}
+
+.footer .content {
+    margin: 0px;
+    color: #616161;
+    font-weight: 500;
+    font-size: 13px;
+}

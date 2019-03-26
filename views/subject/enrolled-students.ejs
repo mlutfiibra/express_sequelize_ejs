@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {title: 'Enrolled Students'}) %>
+<%- include('../partials/navbar') %>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1><%=subject.subjectName %></h1>
+            </div>
+            <div class="col-md-12"><a href="/subjects">return to subject list</a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Score By Number</th>
+                            <th>Score By Letter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% subject.Students.forEach(el => { 
+                            locals.getIndexScore(el.Student_Subject) 
+                        %>
+                        <tr>
+                            <td><%=el.getFullName()%></td>
+                            <td>
+                                <% if(el.Student_Subject.score === null) {%>
+                                <a href="/subjects/<%=subject.id%>/give-score">Give score</a>
+                                <% } else { %>
+                                <%=el.Student_Subject.score%>
+                                <% }%>
+                            </td>
+                            <td>
+                                <%=el.Student_Subject.scoreLetter %>
+                            </td>
+                        </tr>
+                        <% })%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+
+</body>
+
+</html>

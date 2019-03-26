@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('Teachers', [
+    return queryInterface.bulkInsert('teachers', [
       {
         first_name: 'Bambang',
         last_name: 'Suprapto',
@@ -51,6 +51,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('People', null, {});
     */
-    return queryInterface.bulkDelete('Teachers', null, {});
+    return queryInterface.bulkDelete('teachers', null, {});
   }
 };

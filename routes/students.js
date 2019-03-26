@@ -1,6 +1,8 @@
 const express = require('express');
 const routes = express.Router();
 const ModelStudent = require('../models').Student
+const ModelSubject = require('../models').Subject
+const ModelStudentSubject = require('../models').Student_Subject
 
 routes.get('/', (req, res) => {
     ModelStudent.findAll({
@@ -22,9 +24,7 @@ routes.get('/', (req, res) => {
 
 routes.post('/add', (req, res) => {
     ModelStudent.create({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
+            ...req.body,
             createdAt: new Date(),
             updatedAt: new Date()
         })
@@ -38,7 +38,7 @@ routes.post('/add', (req, res) => {
 });
 
 routes.get('/add', (req, res) => {
-    res.render('student-add')
+    res.render('student/add')
 });
 
 routes.get('/edit/:id', (req, res) => {
@@ -57,9 +57,7 @@ routes.get('/edit/:id', (req, res) => {
 
 routes.post('/edit/:id', (req, res) => {
     ModelStudent.update({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
+            ...req.body,
             updatedAt: new Date()
         }, {
             where: {
@@ -87,6 +85,37 @@ routes.get('/delete/:id', (req, res) => {
         })
         .catch(err => {
             res.status(400).json(err)
+        })
+})
+
+routes.get('/:id/add-subject', (req, res) => {
+    let obj = {}
+    ModelStudent.findByPk(req.params.id)
+        .then(student=> {
+            // res.json(student)
+            obj=student 
+            return ModelSubject.findAll({
+                include: [{
+                    model: ModelStudent,
+                    through: { attributes: [] }
+                }]
+            })
+        })
+        .then(subjects => {
+            let result = [obj]
+            result.push(subjects)
+            // res.json(result)
+            res.render('student/add-subject', {result})
+        })
+})
+
+routes.post('/:id/add-subject', (req, res) => {
+    ModelStudentSubject.create({
+        subjectId:req.body.subjectId,
+        studentId:req.params.id
+    })
+        .then(data => {
+            res.redirect('/students')
         })
 })
 

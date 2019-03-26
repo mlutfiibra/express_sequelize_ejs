@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('Subjects', [
+    return queryInterface.bulkInsert('subjects', [
       {
         subject_name: 'Kimia',
         createdAt: new Date(),
@@ -33,6 +33,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('People', null, {});
     */
-    return queryInterface.bulkDelete('Subjects', null, {});
+    return queryInterface.bulkDelete('subjects', null, {});
   }
 };

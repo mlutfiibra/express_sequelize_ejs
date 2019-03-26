@@ -1,18 +1,41 @@
 const express = require('express');
 const routes = express.Router();
 const ModelTeacher = require('../models').Teacher
+const ModelSubject = require('../models').Subject
 
 routes.get('/', (req, res) => {
+    let teacherResult ={}
+
     ModelTeacher.findAll({
             order: [
                 ['id', 'ASC']
-            ]
+            ],
+            include: [{
+                model: ModelSubject,
+                required: false
+            }]
         })
         .then(teachers => {
-            // res.json(teachers)
-            teachers = teachers.map(el => el.dataValues)
+            teacherResult = {
+                teachers:teachers.map(el => el.dataValues)
+            }
+
+            return ModelTeacher.count()
+        })
+        .then(count=> {
+            let result =[]
+
+            count = {
+                teacherCount : count
+            }
+            
+            result.push(teacherResult)
+            result.push(count)
+
+            // res.json(result)
+            
             res.render('teacher/index', {
-                teachers
+                result
             })
         })
         .catch(err => {
@@ -21,45 +44,63 @@ routes.get('/', (req, res) => {
 });
 
 routes.post('/add', (req, res) => {
-    ModelTeacher.create({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            createdAt: new Date(),
-            updatedAt: new Date()
+    ModelTeacher.uniqueEmail(req.body.email)
+        .then(sameEmail => {
+            if (sameEmail === true) throw ('Email sudah ada')
+            return ModelTeacher.create({
+                ...req.body,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
         })
-        .then(teachers => {
-            // res.json(teachers)
+        .then((result) => {
             res.redirect('/teachers')
         })
-        .catch(err => {
-            res.status(400).json(err)            
+        .catch(err => { 
+            ModelSubject.findAll()
+                .then(subjects => {
+                    res.render('teacher/add', {
+                        subjects,
+                        err
+                    })
+                })
         })
 });
 
 routes.get('/add', (req, res) => {
-    res.render('teacher/add')
+    ModelSubject.findAll()
+        .then(subjects => {
+            // res.json(subjects)
+            let err = ''
+            res.render('teacher/add', {
+                subjects,
+                err
+            })
+        })
 });
 
-routes.get('/teachers/edit/:id', (req, res) => {
+routes.get('/edit/:id', (req, res) => {
+    var teachers = ''
     ModelTeacher.findByPk(Number(req.params.id))
         .then(teachers => {
-            // res.json(teachers)
             teachers = teachers.dataValues
-            res.render('teacher/edit', {
-                teachers
+            
+            ModelSubject.findAll()
+            .then(subjects=> {
+                subjects = subjects.map(el=>el.dataValues)
+                res.render('teacher/edit', {
+                    teachers, subjects
+                })
             })
         })
         .catch(err => {
-            res.status(400).json(err)            
+            res.status(400).json(err)
         })
 })
 
 routes.post('/edit/:id', (req, res) => {
     ModelTeacher.update({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
+            ...req.body,
             updatedAt: new Date()
         }, {
             where: {

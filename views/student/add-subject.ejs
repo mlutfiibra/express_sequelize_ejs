@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {title: 'Add Subject'}) %>
+<%- include('../partials/navbar') %>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Add Subject to Student</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form method="POST" action="/students/<%=result[0].id%>/add-subject">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%=result[0].firstName %></td>
+                                <td><%=result[0].lastName %></td>
+                                <td><%=result[0].email %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <label for="subjectId">Choose Subject</label>
+                        <div>
+                            <select name="subjectId" id="">
+                                <option selected disabled>Choose Subject</option>
+
+                                <% for(let value of result[1]) { %>
+                                <option value="<%=value.id%>"><%=value.subjectName %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary">Add subject</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+
+</html>
